@@ -112,6 +112,7 @@ public:
 
 private:
    bool print_stats;       /**< Print stats when flow cache finish. */
+   RecordExtKUBERNETES *recPrealloc; /**< Preallocated instance of record to use */
 };
 
 #endif
