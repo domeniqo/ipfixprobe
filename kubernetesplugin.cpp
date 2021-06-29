@@ -84,7 +84,7 @@ KUBERNETESPlugin::KUBERNETESPlugin(const options_t &module_options, vector<plugi
 {
    print_stats = module_options.print_stats;
    for(auto i : plugin_options) {
-      printf("%s", i.params);
+      printf("%s", i.params.c_str());
    }
 }
 
