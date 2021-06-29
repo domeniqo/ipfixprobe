@@ -90,7 +90,9 @@ ipfixprobe_src=main.cpp \
 		basicplusplugin.h \
 		basicplusplugin.cpp \
 		wgplugin.h \
-		wgplugin.cpp
+		wgplugin.cpp \
+		kubernetesplugin.h \
+		kubernetesplugin.cpp
 
 
 if WITH_NEMEA
