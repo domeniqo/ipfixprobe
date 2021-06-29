@@ -246,6 +246,8 @@
 #define WG_CONF_LEVEL(F)              F(8057,    861,   1,   NULL)
 #define WG_SRC_PEER(F)                F(8057,    862,   4,   NULL)
 #define WG_DST_PEER(F)                F(8057,    863,   4,   NULL)
+  
+#define K8S_APP_NAME(F)               F(0,       500,  10,   NULL)  
 
 /**
  * IPFIX Templates - list of elements
@@ -445,6 +447,9 @@
   F(WG_SRC_PEER) \
   F(WG_DST_PEER)
 
+#define IPFIX_KUBERNETES_TEMPLATE(F) \
+  F(K8S_APP_NAME)
+
 /**
  * List of all known templated.
  *
@@ -471,7 +476,8 @@
    IPFIX_BASICPLUS_TEMPLATE(F) \
    IPFIX_BSTATS_TEMPLATE(F) \
    IPFIX_PHISTS_TEMPLATE(F) \
-   IPFIX_WG_TEMPLATE(F)
+   IPFIX_WG_TEMPLATE(F) \
+   IPFIX_KUBERNETES_TEMPLATE(F)
 
 
 

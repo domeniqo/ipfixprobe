@@ -52,10 +52,11 @@
 
 using namespace std;
 
-#define KUBERNETES_UNIREC_TEMPLATE "" /* TODO: unirec template */
+#define KUBERNETES_UNIREC_TEMPLATE "K8S_APP_NAME" /* TODO: unirec template */
 
 UR_FIELDS (
    /* TODO: unirec fields definition */
+   string K8S_APP_NAME
 )
 
 KUBERNETESPlugin::KUBERNETESPlugin(const options_t &module_options)

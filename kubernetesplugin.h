@@ -45,6 +45,7 @@
 #define KUBERNETESPLUGIN_H
 
 #include <string>
+#include <string.h>
 
 #ifdef WITH_NEMEA
   #include "fields.h"
@@ -62,8 +63,11 @@ using namespace std;
  */
 struct RecordExtKUBERNETES : RecordExt {
 
+   char app_name[10];
+
    RecordExtKUBERNETES() : RecordExt(kubernetes)
    {
+      strcpy(app_name, "testapp");
    }
 
 #ifdef WITH_NEMEA
@@ -74,7 +78,15 @@ struct RecordExtKUBERNETES : RecordExt {
 
    virtual int fillIPFIX(uint8_t *buffer, int size)
    {
-      return 0;
+      int length;
+
+      length = strlen(app_name);
+      if (length + 1 > size) {
+         return -1;
+      }
+      memcpy(buffer, app_name, length);
+      
+      return length + 1;
    }
 };
 
