@@ -67,6 +67,9 @@ KUBERNETESPlugin::KUBERNETESPlugin(const options_t &module_options)
 KUBERNETESPlugin::KUBERNETESPlugin(const options_t &module_options, vector<plugin_opt> plugin_options) : FlowCachePlugin(plugin_options)
 {
    print_stats = module_options.print_stats;
+   for(auto i : plugin_options) {
+      printf("%s", i.params);
+   }
 }
 
 FlowCachePlugin *KUBERNETESPlugin::copy()
@@ -81,11 +84,6 @@ int KUBERNETESPlugin::pre_create(Packet &pkt)
 
 int KUBERNETESPlugin::post_create(Flow &rec, const Packet &pkt)
 {
-   if (recPrealloc == NULL) {
-      recPrealloc = new RecordExtKUBERNETES();
-   }
-   rec.addExtension(recPrealloc);
-   recPrealloc = NULL;
    return 0;
 }
 
@@ -101,6 +99,11 @@ int KUBERNETESPlugin::post_update(Flow &rec, const Packet &pkt)
 
 void KUBERNETESPlugin::pre_export(Flow &rec)
 {
+   if (recPrealloc == NULL) {
+      recPrealloc = new RecordExtKUBERNETES();
+   }
+   rec.addExtension(recPrealloc);
+   recPrealloc = NULL;
 }
 
 void KUBERNETESPlugin::finish()
