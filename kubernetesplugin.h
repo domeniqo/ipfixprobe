@@ -67,7 +67,7 @@ struct RecordExtKUBERNETES : RecordExt {
 
    RecordExtKUBERNETES() : RecordExt(kubernetes)
    {
-      strcpy(app_name, "testapp");
+      strcpy(app_name, "testapp\0");
    }
 
 #ifdef WITH_NEMEA
@@ -81,6 +81,7 @@ struct RecordExtKUBERNETES : RecordExt {
       int length;
 
       length = strlen(app_name);
+      fprintf(stderr, "word: %s, length of word: %d, size: %d", app_name, length, size);
       if (length + 1 > size) {
          return -1;
       }
