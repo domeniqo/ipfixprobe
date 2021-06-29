@@ -81,6 +81,9 @@ int KUBERNETESPlugin::pre_create(Packet &pkt)
 
 int KUBERNETESPlugin::post_create(Flow &rec, const Packet &pkt)
 {
+   RecordExtKUBERNETES *ext = new RecordExtKUBERNETES();
+   rec.addExtension(ext);
+   ext = NULL;
    return 0;
 }
 
@@ -101,7 +104,7 @@ void KUBERNETESPlugin::pre_export(Flow &rec)
 void KUBERNETESPlugin::finish()
 {
    if (print_stats) {
-      //cout << "KUBERNETES plugin stats:" << endl;
+      cout << "KUBERNETES plugin stats: finished" << endl;
    }
 }
 
