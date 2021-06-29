@@ -81,9 +81,11 @@ int KUBERNETESPlugin::pre_create(Packet &pkt)
 
 int KUBERNETESPlugin::post_create(Flow &rec, const Packet &pkt)
 {
-   RecordExtKUBERNETES *ext = new RecordExtKUBERNETES();
-   rec.addExtension(ext);
-   ext = NULL;
+   if (recPrealloc == NULL) {
+      recPrealloc = new RecordExtKUBERNETES();
+   }
+   rec.addExtension(recPrealloc);
+   recPrealloc = NULL;
    return 0;
 }
 
