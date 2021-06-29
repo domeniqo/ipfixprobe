@@ -81,7 +81,6 @@ struct RecordExtKUBERNETES : RecordExt {
       int length;
 
       length = strlen(app_name);
-      fprintf(stderr, "word: %s, length of word: %d, size: %d\n", app_name, length, size);
       if (length + 1 > size) {
          return -1;
       }
@@ -101,10 +100,6 @@ public:
    KUBERNETESPlugin(const options_t &module_options);
    KUBERNETESPlugin(const options_t &module_options, vector<plugin_opt> plugin_options);
    FlowCachePlugin *copy();
-   int pre_create(Packet &pkt);
-   int post_create(Flow &rec, const Packet &pkt);
-   int pre_update(Flow &rec, Packet &pkt);
-   int post_update(Flow &rec, const Packet &pkt);
    void pre_export(Flow &rec);
    void finish();
    const char **get_ipfix_string();
