@@ -102,4 +102,5 @@ tests/*.log
 tests/*.trs
 tests/test_output/
 
-
+# Visual studio code
+.vscode
