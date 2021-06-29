@@ -93,26 +93,6 @@ FlowCachePlugin *KUBERNETESPlugin::copy()
    return new KUBERNETESPlugin(*this);
 }
 
-int KUBERNETESPlugin::pre_create(Packet &pkt)
-{
-   return 0;
-}
-
-int KUBERNETESPlugin::post_create(Flow &rec, const Packet &pkt)
-{
-   return 0;
-}
-
-int KUBERNETESPlugin::pre_update(Flow &rec, Packet &pkt)
-{
-   return 0;
-}
-
-int KUBERNETESPlugin::post_update(Flow &rec, const Packet &pkt)
-{
-   return 0;
-}
-
 void KUBERNETESPlugin::pre_export(Flow &rec)
 {
    if (recPrealloc == NULL) {
