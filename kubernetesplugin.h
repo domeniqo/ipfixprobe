@@ -67,7 +67,7 @@ struct RecordExtKUBERNETES : RecordExt {
 
    RecordExtKUBERNETES() : RecordExt(kubernetes)
    {
-      strcpy(app_name, "testapp\0");
+      strcpy(app_name, "testapp");
    }
 
 #ifdef WITH_NEMEA
@@ -85,7 +85,8 @@ struct RecordExtKUBERNETES : RecordExt {
       if (length + 1 > size) {
          return -1;
       }
-      memcpy(buffer, app_name, length);
+      buffer[0] = length;
+      memcpy(buffer + 1, app_name, length);
       
       return length + 1;
    }
