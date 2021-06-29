@@ -52,6 +52,22 @@
 
 using namespace std;
 
+//#define DEBUG_K8S
+
+// Print debug message if debugging is allowed.
+#ifdef DEBUG_K8S
+#define DEBUG_MSG(format, ...) fprintf(stderr, format, ##__VA_ARGS__)
+#else
+#define DEBUG_MSG(format, ...)
+#endif
+
+// Process code if debugging is allowed.
+#ifdef DEBUG_K8S
+#define DEBUG_CODE(code) code
+#else
+#define DEBUG_CODE(code)
+#endif
+
 #define KUBERNETES_UNIREC_TEMPLATE "K8S_APP_NAME" /* TODO: unirec template */
 
 UR_FIELDS (
