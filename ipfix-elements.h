@@ -245,7 +245,7 @@
 #define WG_SRC_PEER(F)                F(8057,    862,   4,   NULL)
 #define WG_DST_PEER(F)                F(8057,    863,   4,   NULL)
   
-#define K8S_APP_NAME(F)               F(0,       500,  10,   NULL)  
+#define K8S_APP_NAME(F)               F(17000,   500,  10,   NULL)  
 
 /**
  * IPFIX Templates - list of elements
