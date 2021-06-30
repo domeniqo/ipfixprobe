@@ -44,6 +44,7 @@
 #ifndef KUBERNETESPLUGIN_H
 #define KUBERNETESPLUGIN_H
 
+#include <map>
 #include <string>
 #include <string.h>
 
@@ -120,7 +121,12 @@ public:
 
 private:
    bool print_stats;       /**< Print stats when flow cache finish. */
-   RecordExtKUBERNETES *recPrealloc; /**< Preallocated instance of record to use */
+   RecordExtKUBERNETES *recPrealloc; /**< Preallocated instance of record to use. */
+
+   std::vector<string> known_parameter_keys {"app-name", "file-name"}; /**< Used to inform user in case no valid paramter passed to plugin. */
+   std::map<string,string> user_parameters; /**< Map of given parameters by user. */
+
+   bool parse_params(const string &params);
 };
 
 #endif
