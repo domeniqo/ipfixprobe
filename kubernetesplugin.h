@@ -64,15 +64,14 @@ using namespace std;
  */
 struct RecordExtKUBERNETES : RecordExt {
 
-   char app_name[32];
-   char node_name[32];
-   char pod_name[32];
-   char container_ids[256];
-   char container_images[256];
-   char container_image_ids[256];
-   char ports_container[32];
-   char ports_exposed[32];
-   string app_name_s;
+   string app_name;
+   string node_name;
+   string pod_name;
+   string container_ids;
+   string container_images;
+   string container_image_ids;
+   string ports_container;
+   string ports_exposed;
 
    RecordExtKUBERNETES() : RecordExt(kubernetes)
    {
@@ -98,76 +97,83 @@ struct RecordExtKUBERNETES : RecordExt {
       memcpy(buffer + 1, app_name, length);
       total_length = length + 1;
       */
-      app_name_s = app_name_s.substr(32);
-      length = app_name_s.length();
+      app_name = app_name.substr(0, 31);
+      length = app_name.length();
       if (length + 1 > size) {
-         return -1
+         return -1;
       }
       buffer[0] = length;
-      memcpy(buffer + 1, app_name_s.c_str(), length);
+      memcpy(buffer + 1, app_name.c_str(), length);
       total_length = length + 1;
 
       //node name
-      length = strlen(node_name);
+      node_name = node_name.substr(0, 31);
+      length = node_name.length();
       if (total_length + length + 1 > size) {
          return -1;
       }
       buffer[total_length] = length;
-      memcpy(buffer + total_length + 1, node_name, length);
+      memcpy(buffer + total_length + 1, node_name.c_str(), length);
       total_length += length + 1;
       
       //pod name
-      length = strlen(pod_name);
+      pod_name = pod_name.substr(0, 63);
+      length = pod_name.length();
       if (total_length + length + 1 > size) {
          return -1;
       }
       buffer[total_length] = length;
-      memcpy(buffer + total_length + 1, pod_name, length);
+      memcpy(buffer + total_length + 1, pod_name.c_str(), length);
       total_length += length + 1;
       
       //container ids
-      length = strlen(container_ids);
+      container_ids.substr(0, 255);
+      length = container_ids.length();
       if (total_length + length + 1 > size) {
          return -1;
       }
       buffer[total_length] = length;
-      memcpy(buffer + total_length + 1, container_ids, length);
+      memcpy(buffer + total_length + 1, container_ids.c_str(), length);
       total_length += length + 1;
       
       //container images
-      length = strlen(container_images);
+      container_images.substr(0, 255);
+      length = container_images.length();
       if (total_length + length + 1 > size) {
          return -1;
       }
       buffer[total_length] = length;
-      memcpy(buffer + total_length + 1, container_images, length);
+      memcpy(buffer + total_length + 1, container_images.c_str(), length);
       total_length += length + 1;
       
       //container image ids
-      length = strlen(container_image_ids);
+      container_image_ids = container_image_ids.substr(0, 255);
+      length = container_image_ids.length();
       if (total_length + length + 1 > size) {
          return -1;
       }
       buffer[total_length] = length;
-      memcpy(buffer + total_length + 1, container_image_ids, length);
+      memcpy(buffer + total_length + 1, container_image_ids.c_str(), length);
       total_length += length + 1;
       
       //container ports
-      length = strlen(ports_container);
+      ports_container = ports_container.substr(0, 31);
+      length = ports_container.length();
       if (total_length + length + 1 > size) {
          return -1;
       }
       buffer[total_length] = length;
-      memcpy(buffer + total_length + 1, ports_container, length);
+      memcpy(buffer + total_length + 1, ports_container.c_str(), length);
       total_length += length + 1;
       
       //exposed ports
-      length = strlen(ports_exposed);
+      ports_exposed = ports_exposed.substr(0, 31);
+      length = ports_exposed.length();
       if (total_length + length + 1 > size) {
          return -1;
       }
       buffer[total_length] = length;
-      memcpy(buffer + total_length + 1, ports_exposed, length);
+      memcpy(buffer + total_length + 1, ports_exposed.c_str(), length);
       total_length += length + 1;
 
       return total_length;
