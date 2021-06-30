@@ -91,6 +91,19 @@ KUBERNETESPlugin::KUBERNETESPlugin(const options_t &module_options)
 KUBERNETESPlugin::KUBERNETESPlugin(const options_t &module_options, vector<plugin_opt> plugin_options) : FlowCachePlugin(plugin_options)
 {
    print_stats = module_options.print_stats;
+   string params = plugin_options[0].params;
+   string filename;
+   size_t pos_end, pos_begin = params.find("file-name=");
+   if(pos_begin != string::npos) {
+      //filename included in params
+      pos_begin += strlen("file-name=");
+      pos_end = params.find(':', pos_begin);
+      if (pos_end == string::npos) {
+         pos_end = params.length();
+      }
+      filename = params.substr(pos_begin, pos_end - pos_begin);
+      DEBUG_MSG("Filename extracted: %s\n", filename.c_str());
+   }
    parse_params(plugin_options[0].params);
 }
 
