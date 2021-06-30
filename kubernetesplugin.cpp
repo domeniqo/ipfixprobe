@@ -42,6 +42,7 @@
  */
 
 #include <iostream>
+#include <fstream>
 #include <sstream>
 
 #include "kubernetesplugin.h"
@@ -92,6 +93,10 @@ KUBERNETESPlugin::KUBERNETESPlugin(const options_t &module_options, vector<plugi
 {
    print_stats = module_options.print_stats;
    string& params = plugin_options[0].params;
+   for (auto key : known_parameter_keys) {
+      //fill in known parameters to map
+      user_parameters[key] = "";
+   }
    string filename;
    if (parse_filename(params, filename)) {
       parse_params_from_file(filename);
@@ -117,6 +122,36 @@ bool KUBERNETESPlugin::parse_filename(const string& params, string& filename) {
 
 void KUBERNETESPlugin::parse_params_from_file(const string& filename) {
    DEBUG_MSG("Trying to parse file: %s\n", filename.c_str());
+   ifstream filestream;
+
+   filestream.open(filename);
+   if (!filestream.is_open()) {
+      cerr << "ipfixprobe: kubernetes: " << strerror(errno) << " '" << filename << "'\n";
+      return;
+   }
+   string line;
+   while (std::getline(filestream, line))
+   {
+      istringstream is_line(line);
+      string key;
+      if (std::getline(is_line, key, '='))
+      {
+            std::string val;
+            if (key[0] == '#')
+               continue;
+
+            if (std::getline(is_line, val))
+            {
+               try {
+                  //check whether parameter is known or not
+                  user_parameters.at(key) = val;
+                  DEBUG_MSG("Importing parameter key(length): %s(%lu) with value(length): %s(%lu)\n", key.c_str(), key.length(), val.c_str(), val.length());
+               } catch (out_of_range) {
+                  cerr << "ipfixprobe: kubernetes: fileparsing: Unexpected paramater key: " << key << " with value: " << val << endl;
+               }
+            }
+      }
+   }
 }
 
 bool KUBERNETESPlugin::parse_params(const string& params)
@@ -126,11 +161,6 @@ bool KUBERNETESPlugin::parse_params(const string& params)
    vector<string> param_pairs;
    size_t sep = 0;
    string key, val;
-
-   for (auto key : known_parameter_keys) {
-      //fill in known parameters to map
-      user_parameters[key] = "";
-   }
 
    while (param_stream.good()) {
       string param_pair;
