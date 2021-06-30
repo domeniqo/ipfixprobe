@@ -248,6 +248,7 @@
 #define WG_DST_PEER(F)                F(8057,    863,   4,   NULL)
   
 #define K8S_APP_NAME(F)               F(17000,   500,  -1,   NULL)  
+#define K8S_NODE_NAME(F)              F(17000,   501,  -1,   NULL)  
 
 /**
  * IPFIX Templates - list of elements
@@ -448,7 +449,8 @@
   F(WG_DST_PEER)
 
 #define IPFIX_KUBERNETES_TEMPLATE(F) \
-  F(K8S_APP_NAME)
+  F(K8S_APP_NAME) \
+  F(K8S_NODE_NAME)
 
 /**
  * List of all known templated.
