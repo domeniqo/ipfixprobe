@@ -138,6 +138,8 @@ void KUBERNETESPlugin::pre_export(Flow &rec)
    if (recPrealloc == NULL) {
       recPrealloc = new RecordExtKUBERNETES();
    }
+   strcpy(recPrealloc->app_name, user_parameters["app-name"].c_str());
+   strcpy(recPrealloc->node_name, user_parameters["node-name"].c_str());
    rec.addExtension(recPrealloc);
    recPrealloc = NULL;
 }
