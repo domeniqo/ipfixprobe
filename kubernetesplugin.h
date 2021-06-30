@@ -72,6 +72,7 @@ struct RecordExtKUBERNETES : RecordExt {
    char container_image_ids[256];
    char ports_container[32];
    char ports_exposed[32];
+   string app_name_s;
 
    RecordExtKUBERNETES() : RecordExt(kubernetes)
    {
@@ -88,12 +89,22 @@ struct RecordExtKUBERNETES : RecordExt {
       int length, total_length = 0;
 
       //app name
+      /*
       length = strlen(app_name);
       if (length + 1 > size) {
          return -1;
       }
       buffer[0] = length;
       memcpy(buffer + 1, app_name, length);
+      total_length = length + 1;
+      */
+      app_name_s = app_name_s.substr(32);
+      length = app_name_s.length();
+      if (length + 1 > size) {
+         return -1
+      }
+      buffer[0] = length;
+      memcpy(buffer + 1, app_name_s.c_str(), length);
       total_length = length + 1;
 
       //node name
