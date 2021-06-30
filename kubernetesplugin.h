@@ -69,8 +69,6 @@ struct RecordExtKUBERNETES : RecordExt {
 
    RecordExtKUBERNETES() : RecordExt(kubernetes)
    {
-      strcpy(app_name, "testapp");
-      strcpy(node_name, "");
    }
 
 #ifdef WITH_NEMEA
@@ -123,7 +121,7 @@ private:
    bool print_stats;       /**< Print stats when flow cache finish. */
    RecordExtKUBERNETES *recPrealloc; /**< Preallocated instance of record to use. */
 
-   std::vector<string> known_parameter_keys {"app-name", "file-name"}; /**< Used to inform user in case no valid paramter passed to plugin. */
+   std::vector<string> known_parameter_keys {"app-name", "file-name", "node-name"}; /**< Used to inform user in case no valid paramter passed to plugin. */
    std::map<string,string> user_parameters; /**< Map of given parameters by user. */
 
    bool parse_params(const string &params);
