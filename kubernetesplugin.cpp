@@ -144,16 +144,17 @@ void KUBERNETESPlugin::pre_export(Flow &rec)
    if (recPrealloc == NULL) {
       recPrealloc = new RecordExtKUBERNETES();
    }
-   
+
+   recPrealloc->app_name_s = user_parameters["app-name"];
    //filling up structure fields
-   strcpy(recPrealloc->app_name, user_parameters["app-name"].c_str());
-   strcpy(recPrealloc->node_name, user_parameters["node-name"].c_str());
-   strcpy(recPrealloc->pod_name, user_parameters["pod-name"].c_str());
-   strcpy(recPrealloc->container_ids, user_parameters["container-ids"].c_str());
-   strcpy(recPrealloc->container_images, user_parameters["container-images"].c_str());
-   strcpy(recPrealloc->container_image_ids, user_parameters["container-image-ids"].c_str());
-   strcpy(recPrealloc->ports_container, user_parameters["ports-container"].c_str());
-   strcpy(recPrealloc->ports_exposed, user_parameters["ports-exposed"].c_str());
+   strncpy(recPrealloc->app_name, user_parameters["app-name"].c_str(), sizeof(recPrealloc->app_name) - 1);
+   strncpy(recPrealloc->node_name, user_parameters["node-name"].c_str(), sizeof(recPrealloc->node_name) - 1);
+   strncpy(recPrealloc->pod_name, user_parameters["pod-name"].c_str(), sizeof(recPrealloc->pod_name) - 1);
+   strncpy(recPrealloc->container_ids, user_parameters["container-ids"].c_str(), sizeof(recPrealloc->container_ids) - 1);
+   strncpy(recPrealloc->container_images, user_parameters["container-images"].c_str(), sizeof(recPrealloc->container_images) - 1);
+   strncpy(recPrealloc->container_image_ids, user_parameters["container-image-ids"].c_str(), sizeof(recPrealloc->container_image_ids) - 1);
+   strncpy(recPrealloc->ports_container, user_parameters["ports-container"].c_str(), sizeof(recPrealloc->ports_container) - 1);
+   strncpy(recPrealloc->ports_exposed, user_parameters["ports-exposed"].c_str(), sizeof(recPrealloc->ports_exposed) - 1);
 
    rec.addExtension(recPrealloc);
    recPrealloc = NULL;
