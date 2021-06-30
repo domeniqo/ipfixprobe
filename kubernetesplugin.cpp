@@ -69,12 +69,18 @@ using namespace std;
 #define DEBUG_CODE(code)
 #endif
 
-#define KUBERNETES_UNIREC_TEMPLATE "K8S_APP_NAME,K8S_NODE_NAME" /* TODO: unirec template */
+#define KUBERNETES_UNIREC_TEMPLATE "K8S_APP_NAME,K8S_NODE_NAME,K8S_POD_NAME,K8S_CONTAINER_IDS,K8S_CONTAINER_IMAGES,K8S_CONTAINER_IMAGE_IDS,K8S_PORTS_CONTAINER,K8S_PORTS_EXPOSED" /* TODO: unirec template */
 
 UR_FIELDS (
    /* TODO: unirec fields definition */
    string K8S_APP_NAME
    string K8S_NODE_NAME
+   string K8S_POD_NAME
+   string K8S_CONTAINER_IDS
+   string K8S_CONTAINER_IMAGES
+   string K8S_CONTAINER_IMAGE_IDS
+   string K8S_PORTS_CONTAINER
+   string K8S_PORTS_EXPOSED
 )
 
 KUBERNETESPlugin::KUBERNETESPlugin(const options_t &module_options)
@@ -138,8 +144,17 @@ void KUBERNETESPlugin::pre_export(Flow &rec)
    if (recPrealloc == NULL) {
       recPrealloc = new RecordExtKUBERNETES();
    }
+   
+   //filling up structure fields
    strcpy(recPrealloc->app_name, user_parameters["app-name"].c_str());
    strcpy(recPrealloc->node_name, user_parameters["node-name"].c_str());
+   strcpy(recPrealloc->pod_name, user_parameters["pod-name"].c_str());
+   strcpy(recPrealloc->container_ids, user_parameters["container-ids"].c_str());
+   strcpy(recPrealloc->container_images, user_parameters["container-images"].c_str());
+   strcpy(recPrealloc->container_image_ids, user_parameters["container-image-ids"].c_str());
+   strcpy(recPrealloc->ports_container, user_parameters["ports-container"].c_str());
+   strcpy(recPrealloc->ports_exposed, user_parameters["ports-exposed"].c_str());
+
    rec.addExtension(recPrealloc);
    recPrealloc = NULL;
 }
