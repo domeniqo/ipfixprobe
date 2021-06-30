@@ -201,7 +201,9 @@ private:
    std::vector<string> known_parameter_keys {"app-name", "file-name", "node-name", "pod-name", "container-ids", "container-images", "container-image-ids", "ports-container", "ports-exposed"}; /**< Used to inform user in case no valid paramter passed to plugin. */
    std::map<string,string> user_parameters; /**< Map of given parameters by user. */
 
+   bool parse_filename(const string& params, string& filename);
    bool parse_params(const string &params);
+   void parse_params_from_file(const string& filename);
 };
 
 #endif

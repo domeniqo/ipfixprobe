@@ -91,8 +91,15 @@ KUBERNETESPlugin::KUBERNETESPlugin(const options_t &module_options)
 KUBERNETESPlugin::KUBERNETESPlugin(const options_t &module_options, vector<plugin_opt> plugin_options) : FlowCachePlugin(plugin_options)
 {
    print_stats = module_options.print_stats;
-   string params = plugin_options[0].params;
+   string& params = plugin_options[0].params;
    string filename;
+   if (parse_filename(params, filename)) {
+      parse_params_from_file(filename);
+   }
+   parse_params(params);
+}
+
+bool KUBERNETESPlugin::parse_filename(const string& params, string& filename) {
    size_t pos_end, pos_begin = params.find("file-name=");
    if(pos_begin != string::npos) {
       //filename included in params
@@ -103,11 +110,16 @@ KUBERNETESPlugin::KUBERNETESPlugin(const options_t &module_options, vector<plugi
       }
       filename = params.substr(pos_begin, pos_end - pos_begin);
       DEBUG_MSG("Filename extracted: %s\n", filename.c_str());
+      return true;
    }
-   parse_params(plugin_options[0].params);
+   return false;
 }
 
-bool KUBERNETESPlugin::parse_params(const string &params)
+void KUBERNETESPlugin::parse_params_from_file(const string& filename) {
+   DEBUG_MSG("Trying to parse file: %s\n", filename.c_str());
+}
+
+bool KUBERNETESPlugin::parse_params(const string& params)
 {
    DEBUG_MSG("Recieved parameters: %s\n", params.c_str());
    stringstream param_stream (params);
