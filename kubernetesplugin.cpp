@@ -42,6 +42,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 
 #include "kubernetesplugin.h"
 #include "flowifc.h"
@@ -52,7 +53,7 @@
 
 using namespace std;
 
-//#define DEBUG_K8S
+#define DEBUG_K8S
 
 // Print debug message if debugging is allowed.
 #ifdef DEBUG_K8S
@@ -84,9 +85,47 @@ KUBERNETESPlugin::KUBERNETESPlugin(const options_t &module_options)
 KUBERNETESPlugin::KUBERNETESPlugin(const options_t &module_options, vector<plugin_opt> plugin_options) : FlowCachePlugin(plugin_options)
 {
    print_stats = module_options.print_stats;
-   for(auto i : plugin_options) {
-      printf("%s", i.params.c_str());
+   parse_params(plugin_options[0].params);
+}
+
+bool KUBERNETESPlugin::parse_params(const string &params)
+{
+   DEBUG_MSG("Recieved parameters: %s\n", params.c_str());
+   stringstream param_stream (params);
+   vector<string> param_pairs;
+   size_t sep = 0;
+   string key, val;
+
+   for (auto key : known_parameter_keys) {
+      //fill in known parameters to map
+      user_parameters[key] = "";
    }
+
+   while (param_stream.good()) {
+      string param_pair;
+      getline(param_stream, param_pair, ':');
+      param_pairs.push_back(param_pair);
+   }
+
+   for (auto param_pair : param_pairs) {
+      sep = param_pair.find("=", 0);
+      if(sep == string::npos) {
+         sep = param_pair.length() - 1;
+         key = param_pair.substr(0, sep + 1);
+      }  else {
+         key = param_pair.substr(0, sep);
+      }
+      val = param_pair.substr(sep + 1, param_pair.length() - 1);
+      try {
+         //check whether parameter is known or not
+         user_parameters.at(key) = val;
+         DEBUG_MSG("Importing parameter key(length): %s(%lu) with value(length): %s(%lu)\n", key.c_str(), key.length(), val.c_str(), val.length());
+      } catch (out_of_range) {
+         cerr << "ipfixprobe: kubernetes: Unexpected paramater key: " << key << " with value: " << val << endl;
+      }
+   }
+   
+   return true;
 }
 
 FlowCachePlugin *KUBERNETESPlugin::copy()
