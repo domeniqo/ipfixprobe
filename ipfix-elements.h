@@ -247,6 +247,12 @@
   
 #define K8S_APP_NAME(F)               F(17000,   500,  -1,   NULL)  
 #define K8S_NODE_NAME(F)              F(17000,   501,  -1,   NULL)  
+#define K8S_POD_NAME(F)               F(17000,   502,  -1,   NULL)  
+#define K8S_CONTAINER_IDS(F)          F(17000,   503,  -1,   NULL)  
+#define K8S_CONTAINER_IMAGES(F)       F(17000,   504,  -1,   NULL)  
+#define K8S_CONTAINER_IMAGE_IDS(F)    F(17000,   505,  -1,   NULL)  
+#define K8S_PORTS_CONTAINER(F)        F(17000,   506,  -1,   NULL)  
+#define K8S_PORTS_EXPOSED(F)          F(17000,   507,  -1,   NULL)  
 
 /**
  * IPFIX Templates - list of elements
@@ -451,7 +457,13 @@
 
 #define IPFIX_KUBERNETES_TEMPLATE(F) \
   F(K8S_APP_NAME) \
-  F(K8S_NODE_NAME)
+  F(K8S_NODE_NAME) \
+  F(K8S_POD_NAME) \
+  F(K8S_CONTAINER_IDS) \
+  F(K8S_CONTAINER_IMAGES) \
+  F(K8S_CONTAINER_IMAGE_IDS) \
+  F(K8S_PORTS_CONTAINER) \
+  F(K8S_PORTS_EXPOSED)
 
 /**
  * List of all known templated.

@@ -64,8 +64,14 @@ using namespace std;
  */
 struct RecordExtKUBERNETES : RecordExt {
 
-   char app_name[10];
-   char node_name[10];
+   char app_name[32];
+   char node_name[32];
+   char pod_name[32];
+   char container_ids[256];
+   char container_images[256];
+   char container_image_ids[256];
+   char ports_container[32];
+   char ports_exposed[32];
 
    RecordExtKUBERNETES() : RecordExt(kubernetes)
    {
@@ -98,6 +104,60 @@ struct RecordExtKUBERNETES : RecordExt {
       buffer[total_length] = length;
       memcpy(buffer + total_length + 1, node_name, length);
       total_length += length + 1;
+      
+      //pod name
+      length = strlen(pod_name);
+      if (total_length + length + 1 > size) {
+         return -1;
+      }
+      buffer[total_length] = length;
+      memcpy(buffer + total_length + 1, pod_name, length);
+      total_length += length + 1;
+      
+      //container ids
+      length = strlen(container_ids);
+      if (total_length + length + 1 > size) {
+         return -1;
+      }
+      buffer[total_length] = length;
+      memcpy(buffer + total_length + 1, container_ids, length);
+      total_length += length + 1;
+      
+      //container images
+      length = strlen(container_images);
+      if (total_length + length + 1 > size) {
+         return -1;
+      }
+      buffer[total_length] = length;
+      memcpy(buffer + total_length + 1, container_images, length);
+      total_length += length + 1;
+      
+      //container image ids
+      length = strlen(container_image_ids);
+      if (total_length + length + 1 > size) {
+         return -1;
+      }
+      buffer[total_length] = length;
+      memcpy(buffer + total_length + 1, container_image_ids, length);
+      total_length += length + 1;
+      
+      //container ports
+      length = strlen(ports_container);
+      if (total_length + length + 1 > size) {
+         return -1;
+      }
+      buffer[total_length] = length;
+      memcpy(buffer + total_length + 1, ports_container, length);
+      total_length += length + 1;
+      
+      //exposed ports
+      length = strlen(ports_exposed);
+      if (total_length + length + 1 > size) {
+         return -1;
+      }
+      buffer[total_length] = length;
+      memcpy(buffer + total_length + 1, ports_exposed, length);
+      total_length += length + 1;
 
       return total_length;
    }
@@ -121,7 +181,7 @@ private:
    bool print_stats;       /**< Print stats when flow cache finish. */
    RecordExtKUBERNETES *recPrealloc; /**< Preallocated instance of record to use. */
 
-   std::vector<string> known_parameter_keys {"app-name", "file-name", "node-name"}; /**< Used to inform user in case no valid paramter passed to plugin. */
+   std::vector<string> known_parameter_keys {"app-name", "file-name", "node-name", "pod-name", "container-ids", "container-images", "container-image-ids", "ports-container", "ports-exposed"}; /**< Used to inform user in case no valid paramter passed to plugin. */
    std::map<string,string> user_parameters; /**< Map of given parameters by user. */
 
    bool parse_params(const string &params);
