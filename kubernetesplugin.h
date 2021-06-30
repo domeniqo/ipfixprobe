@@ -45,8 +45,8 @@
 #define KUBERNETESPLUGIN_H
 
 #include <map>
+#include <cstring>
 #include <string>
-#include <string.h>
 
 #ifdef WITH_NEMEA
   #include "fields.h"
