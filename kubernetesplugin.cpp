@@ -68,11 +68,12 @@ using namespace std;
 #define DEBUG_CODE(code)
 #endif
 
-#define KUBERNETES_UNIREC_TEMPLATE "K8S_APP_NAME" /* TODO: unirec template */
+#define KUBERNETES_UNIREC_TEMPLATE "K8S_APP_NAME,K8S_NODE_NAME" /* TODO: unirec template */
 
 UR_FIELDS (
    /* TODO: unirec fields definition */
    string K8S_APP_NAME
+   string K8S_NODE_NAME
 )
 
 KUBERNETESPlugin::KUBERNETESPlugin(const options_t &module_options)

@@ -64,10 +64,12 @@ using namespace std;
 struct RecordExtKUBERNETES : RecordExt {
 
    char app_name[10];
+   char node_name[10];
 
    RecordExtKUBERNETES() : RecordExt(kubernetes)
    {
       strcpy(app_name, "testapp");
+      strcpy(node_name, "");
    }
 
 #ifdef WITH_NEMEA
@@ -78,16 +80,27 @@ struct RecordExtKUBERNETES : RecordExt {
 
    virtual int fillIPFIX(uint8_t *buffer, int size)
    {
-      int length;
+      int length, total_length = 0;
 
+      //app name
       length = strlen(app_name);
       if (length + 1 > size) {
          return -1;
       }
       buffer[0] = length;
       memcpy(buffer + 1, app_name, length);
-      
-      return length + 1;
+      total_length = length + 1;
+
+      //node name
+      length = strlen(node_name);
+      if (total_length + length + 1 > size) {
+         return -1;
+      }
+      buffer[total_length] = length;
+      memcpy(buffer + total_length + 1, node_name, length);
+      total_length += length + 1;
+
+      return total_length;
    }
 };
 
