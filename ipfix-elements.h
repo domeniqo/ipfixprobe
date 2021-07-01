@@ -245,14 +245,14 @@
 #define WG_SRC_PEER(F)                F(8057,    862,   4,   NULL)
 #define WG_DST_PEER(F)                F(8057,    863,   4,   NULL)
   
-#define K8S_APP_NAME(F)               F(17000,   500,  -1,   NULL)  
-#define K8S_NODE_NAME(F)              F(17000,   501,  -1,   NULL)  
-#define K8S_POD_NAME(F)               F(17000,   502,  -1,   NULL)  
-#define K8S_CONTAINER_IDS(F)          F(17000,   503,  -1,   NULL)  
-#define K8S_CONTAINER_IMAGES(F)       F(17000,   504,  -1,   NULL)  
-#define K8S_CONTAINER_IMAGE_IDS(F)    F(17000,   505,  -1,   NULL)  
-#define K8S_PORTS_CONTAINER(F)        F(17000,   506,  -1,   NULL)  
-#define K8S_PORTS_EXPOSED(F)          F(17000,   507,  -1,   NULL)  
+#define K8S_APP_NAME(F)               F(16982,   900,  -1,   NULL)  
+#define K8S_NODE_NAME(F)              F(16982,   901,  -1,   NULL)  
+#define K8S_POD_NAME(F)               F(16982,   902,  -1,   NULL)  
+#define K8S_CONTAINER_IDS(F)          F(16982,   903,  -1,   NULL)  
+#define K8S_CONTAINER_IMAGES(F)       F(16982,   904,  -1,   NULL)  
+#define K8S_CONTAINER_IMAGE_IDS(F)    F(16982,   905,  -1,   NULL)  
+#define K8S_PORTS_CONTAINER(F)        F(16982,   906,  -1,   NULL)  
+#define K8S_PORTS_EXPOSED(F)          F(16982,   907,  -1,   NULL)  
 
 /**
  * IPFIX Templates - list of elements
