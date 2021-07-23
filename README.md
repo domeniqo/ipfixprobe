@@ -525,6 +525,42 @@ List of UniRec fields exported together with basic flow fields on interface by W
 | WG_SRC_PEER        | uint32 | ephemeral SRC peer identifier                                 |
 | WG_DST_PEER        | uint32 | ephemeral DST peer identifier                                 |
 
+### Kubernetes
+
+List of UniRec fields exported together with basic flow fields on the interface by Kuberentes plugin.
+
+| UniRecField              | Type   | Description                                                                                                                                                                                         |
+|:------------------------:|:------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
+| K8S_APP_NAME             | string |  Name from label 'app' given to Pod                                                                                                                                                                 |
+| K8S_NODE_NAME            | string |  Name and IP address of the node where Pod is currently running                                                                                                                                     |
+| K8S_POD_NAME             | string |  Unique pod name. Can be used to execute some commands in its containers.                                                                                                                           |
+| K8S_CONTAINER_IDS        | string |  Ids of all containers in pod deliminated by ','. Usefull in case you are logged on node where pod is running. Then you can login into container with this id                                       |
+| K8S_CONTAINER_IMAGES     | string |  Images used in running containers within pod.                                                                                                                                                      |
+| K8S_CONTAINER_IMAGE_IDS  | string |  Sha-256 hash of images of running containers. Can be useful when you need to determine particular container image.                                                                                 |
+| K8S_PORTS_CONTAINER      | string |  List of open ports in containers. App is reachable within cluster in the same namespace at {container.ip}:port                                                                                     |
+| K8S_PORTS_EXPOSED        | string |  List of exposed ports to node network. App is reachable within cluster in the same namespace at {node.ip}:port. These ports are used also when you create service to network outside the cluster.  |
+
+#### Plugin parameters:
+Each field can be set manually in the form key=value and the following table shows how parameters are mapped to fields.
+
+| UniRecField              | Parameter           |
+|:------------------------:|:-------------------:|
+| K8S_APP_NAME             | app-name            |
+| K8S_NODE_NAME            | node-name           |
+| K8S_POD_NAME             | pod-name            |
+| K8S_CONTAINER_IDS        | container-ids       |
+| K8S_CONTAINER_IMAGES     | container-images    |
+| K8S_CONTAINER_IMAGE_IDS  | container-image-ids |
+| K8S_PORTS_CONTAINER      | ports-container     |
+| K8S_PORTS_EXPOSED        | ports-exposed       |
+
+There is also one extra parameter available - 'file-name'. This file can contain also key=value pairs for exporting fields. When field is defined in file-name and given also as a paramter, value for such key in file is overriden by parameter's value. File can also contain comments - lines starting with '#'.
+
+##### Example:
+```
+ipfixprobe kubernetes:app-name=testapp:node-name=s2:pod-name=testpod:ports-exposed=80:ports-container=8080';'80:file-name=/path/to/testfile.txt -r sample.pcap -i "f:output.trapcap"
+```
+
 ## Simplified function diagram
 Diagram below shows how `ipfixprobe` works.
 
