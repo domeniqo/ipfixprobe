@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([ipfixprobe], [3.0.0], [nemea@cesnet.cz])
+AC_INIT([ipfixprobe], [3.2.1], [nemea@cesnet.cz])
 
 AC_CONFIG_SRCDIR([ipfixprobe.h])
 AC_CONFIG_HEADERS([config.h])
@@ -90,6 +90,33 @@ if [[ -z "$HAVE_NDP_TRUE" ]]; then
    LIBS="-lnfb $LIBS"
    RPM_REQUIRES+=" netcope-common"
    RPM_BUILDREQ+=" netcope-common-devel"
+fi
+
+AC_ARG_WITH([unwind],
+        AC_HELP_STRING([--with-unwind],[Compile ipfixprobe with libunwind to print stack on crash.]),
+        [
+      if test "$withval" = "yes"; then
+         withunwind="yes"
+      else
+         withunwind="no"
+      fi
+        ], [withunwind="no"]
+)
+
+if test x${withunwind} = xyes; then
+   AC_CHECK_HEADER(libunwind.h,
+         AC_CHECK_LIB(unwind, unw_backtrace, [libunwind=yes], AC_MSG_ERROR([libunwind not found])),
+         AC_MSG_ERROR([libunwind.h not found]))
+
+   AM_CONDITIONAL(HAVE_LIBUNWIND, test x${libunwind} = xyes)
+   if [[ -z "$HAVE_LIBUNWIND_TRUE" ]]; then
+      AC_DEFINE([HAVE_LIBUNWIND], [1], [Define to 1 if the libunwind is available])
+      LIBS="-lunwind $LIBS"
+      RPM_REQUIRES+=" libunwind"
+      RPM_BUILDREQ+=" libunwind-devel"
+   fi
+else
+   AM_CONDITIONAL(HAVE_LIBUNWIND, false)
 fi
 
 if test x${withndp} = xno; then

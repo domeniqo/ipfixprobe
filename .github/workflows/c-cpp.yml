@@ -1,4 +1,4 @@
-name: C/C++ CI
+name: Build and Checks
 
 on:
   push:
@@ -16,7 +16,7 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get -y install git build-essential autoconf libtool libpcap-dev pkg-config libxml2-dev
+        sudo apt-get -y install git build-essential autoconf libtool libpcap-dev pkg-config libxml2-dev libunwind-dev
         ( git clone --depth 1 https://github.com/CESNET/nemea-framework /tmp/nemea-framework; cd /tmp/nemea-framework; ./bootstrap.sh &&./configure --bindir=/usr/bin/nemea/ -q &&make -j10 && sudo make install; sudo ldconfig)
         ( git clone --depth 1 https://github.com/CESNET/nemea-modules /tmp/nemea-modules; cd /tmp/nemea-modules; ./bootstrap.sh &&./configure --bindir=/usr/bin/nemea/ -q &&make -j10 && sudo make install; )
     - name: autoreconf
@@ -29,3 +29,14 @@ jobs:
       run: make check
     - name: make distcheck
       run: make distcheck
+    - name: configure with debug
+      run: ./configure --with-nemea --enable-debug CXXFLAGS=-coverage CFLAGS=-coverage LDFLAGS=-lgcov
+    - name: rebuild and check
+      run: make clean; make check
+    - uses: codecov/codecov-action@v1
+      with:
+        flags: tests # optional
+        name: ipfixprobe # optional
+        fail_ci_if_error: true # optional (default = false)
+        verbose: true # optional (default = false)
+

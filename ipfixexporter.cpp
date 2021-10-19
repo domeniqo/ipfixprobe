@@ -124,8 +124,8 @@ const char *basic_tmplt_v6[] = {
 
 IPFIXExporter::IPFIXExporter()
 {
-   records = 0;
-   dropped = 0;
+   flows_seen = 0;
+   flows_dropped = 0;
    templates = NULL;
    templatesDataSize = 0;
    basic_ifc_num = -1;
@@ -182,6 +182,7 @@ void IPFIXExporter::shutdown()
    packetDataBuffer = NULL;
 }
 
+static_assert(EXTENSION_CNT <= 64, "Extension count is supported up to 64 extensions for now.");
 uint64_t IPFIXExporter::get_template_id(Record &flow)
 {
    RecordExt *ext = flow.exts;
@@ -216,12 +217,12 @@ std::vector<const char *> IPFIXExporter::get_template_fields(uint64_t tmpltId)
 
 template_t *IPFIXExporter::get_template(Flow &flow)
 {
-   int ipTmpltIdx = flow.ip_version == 6 ? 1 : 0;
+   int ipTmpltIdx = flow.ip_version == 6 ? TMPLT_IDX_V6 : TMPLT_IDX_V4;
    uint64_t tmpltIdx = get_template_id(flow);
    if (tmpltMap[ipTmpltIdx].find(tmpltIdx) == tmpltMap[ipTmpltIdx].end()) {
       std::vector<const char *> fields = get_template_fields(tmpltIdx);
-      tmpltMap[0][tmpltIdx] = create_template(basic_tmplt_v4, fields.data());
-      tmpltMap[1][tmpltIdx] = create_template(basic_tmplt_v6, fields.data());
+      tmpltMap[TMPLT_IDX_V4][tmpltIdx] = create_template(basic_tmplt_v4, fields.data());
+      tmpltMap[TMPLT_IDX_V6][tmpltIdx] = create_template(basic_tmplt_v6, fields.data());
    }
 
    return tmpltMap[ipTmpltIdx][tmpltIdx];
@@ -281,13 +282,13 @@ bool IPFIXExporter::fill_template(Flow &flow, template_t *tmplt)
 
 int IPFIXExporter::export_flow(Flow &flow)
 {
-   records++;
+   flows_seen++;
    template_t *tmplt = get_template(flow);
    if (!fill_template(flow, tmplt)) {
       flush();
 
       if (!fill_template(flow, tmplt)) {
-         dropped++;
+         flows_dropped++;
          return 1;
       }
    }

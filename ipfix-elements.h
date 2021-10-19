@@ -91,6 +91,7 @@
 #define OBSERVATION_MSEC(F)           F(0,      323,    8,   NULL)
 #define INPUT_INTERFACE(F)            F(0,       10,    2,   &this->dir_bit_field)
 #define OUTPUT_INTERFACE(F)           F(0,       14,    2,   NULL)
+#define FLOW_END_REASON(F)            F(0,      136,    1,   &flow.end_reason)
 
 #define ETHERTYPE(F)                  F(0,      256,    2,   NULL)
 
@@ -128,13 +129,13 @@
 #define L4_TCP_MSS_REV(F)             F(8057,   901,   4,   NULL)
 #define L4_TCP_SYN_SIZE(F)            F(8057,   902,   2,   NULL)
 
-#define HTTP_USERAGENT(F)             F(16982,  100,   -1,   NULL)
-#define HTTP_METHOD(F)                F(16982,  101,   -1,   NULL)
-#define HTTP_DOMAIN(F)                F(16982,  102,   -1,   NULL)
-#define HTTP_REFERER(F)               F(16982,  103,   -1,   NULL)
-#define HTTP_CONTENT_TYPE(F)          F(16982,  104,   -1,   NULL)
-#define HTTP_URI(F)                   F(16982,  105,   -1,   NULL)
-#define HTTP_STATUS(F)                F(16982,  106,    2,   NULL)
+#define HTTP_DOMAIN(F)                F(39499,    1,   -1,   NULL)
+#define HTTP_REFERER(F)               F(39499,    3,   -1,   NULL)
+#define HTTP_URI(F)                   F(39499,    2,   -1,   NULL)
+#define HTTP_CONTENT_TYPE(F)          F(39499,   10,   -1,   NULL)
+#define HTTP_STATUS(F)                F(39499,   12,    2,   NULL)
+#define HTTP_USERAGENT(F)             F(39499,   20,   -1,   NULL)
+#define HTTP_METHOD(F)                F(8057,   200,   -1,   NULL)
 
 #define RTSP_METHOD(F)                F(16982,  600,   -1,   NULL)
 #define RTSP_USERAGENT(F)             F(16982,  601,   -1,   NULL)
@@ -189,6 +190,7 @@
 #define ARP_DST_PA(F)                 F(8057,    37,   -1,   NULL)
 
 #define TLS_SNI(F)                    F(8057,   808,   -1,   NULL)
+#define TLS_ALPN(F)                   F(8057,   809,   -1,   NULL)
 #define TLS_JA3(F)                    F(8057,   830,   -1,   NULL)
 
 #define SMTP_COMMANDS(F)              F(8057,    810,   4,   NULL)
@@ -244,7 +246,7 @@
 #define WG_CONF_LEVEL(F)              F(8057,    861,   1,   NULL)
 #define WG_SRC_PEER(F)                F(8057,    862,   4,   NULL)
 #define WG_DST_PEER(F)                F(8057,    863,   4,   NULL)
-  
+
 /**
  * IPFIX Templates - list of elements
  *
@@ -252,17 +254,12 @@
  * This argument must be a macro function which is substituted with every
  * specified element of the template.
  *
- * For instance, PACKET_TMPLT contains L2_SRC_MAC, L2_DST_MAC, ETHERTYPE, OBSERVATION_MSEC,
+ * For instance, BASIC_TMPLT_V4 contains FLOW_END_REASON, BYTES, BYTES_REV, PACKETS,...
  * all of them defined above.
  */
 
-#define PACKET_TMPLT(F) \
-   F(L2_SRC_MAC) \
-   F(L2_DST_MAC) \
-   F(ETHERTYPE) \
-   F(OBSERVATION_MSEC)
-
 #define BASIC_TMPLT_V4(F) \
+   F(FLOW_END_REASON) \
    F(BYTES) \
    F(BYTES_REV) \
    F(PACKETS) \
@@ -282,6 +279,7 @@
    F(L2_DST_MAC)
 
 #define BASIC_TMPLT_V6(F) \
+   F(FLOW_END_REASON) \
    F(BYTES) \
    F(BYTES_REV) \
    F(PACKETS) \
@@ -319,6 +317,7 @@
 
 #define IPFIX_TLS_TEMPLATE(F) \
    F(TLS_SNI)\
+   F(TLS_ALPN)\
    F(TLS_JA3)
 
 #define IPFIX_NTP_TEMPLATE(F) \
@@ -453,7 +452,6 @@
  * templates at once.
  */
 #define IPFIX_ENABLED_TEMPLATES(F) \
-   PACKET_TMPLT(F) \
    BASIC_TMPLT_V4(F) \
    BASIC_TMPLT_V6(F) \
    IPFIX_HTTP_TEMPLATE(F) \

@@ -86,6 +86,7 @@ const uint32_t PHISTSPlugin::log2_lookup32[32] = { 0,  9,  1,  10, 13, 21, 2,  2
 PHISTSPlugin::PHISTSPlugin(const options_t &module_options)
 {
    print_stats = module_options.print_stats;
+   use_zeros = false;
 }
 
 PHISTSPlugin::PHISTSPlugin(const options_t &module_options, vector<plugin_opt> plugin_options)
@@ -139,7 +140,7 @@ uint64_t PHISTSPlugin::calculate_ipt(RecordExtPHISTS *phists_data, const struct 
 
 void PHISTSPlugin::update_record(RecordExtPHISTS *phists_data, const Packet &pkt)
 {
-   if(pkt.payload_length_orig == 0 && use_zeros == true){
+   if(pkt.payload_length_orig == 0 && use_zeros == false){
       return;
    }
    uint8_t direction = (uint8_t) !pkt.source_pkt;
