@@ -533,7 +533,7 @@ List of UniRec fields exported together with basic flow fields on the interface 
 
 | UniRecField              | Type   | Description                                                                                                                                                                                         |
 |:------------------------:|:------:|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------:|
-| K8S_APP_NAME             | string |  Name from label 'app' given to Pod                                                                                                                                                                 |
+| K8S_APP_NAME             | string |  Name from label 'csirt.muni.cz/appName' given to POD                                                                                                                                                                 |
 | K8S_NODE_NAME            | string |  Name and IP address of the node where Pod is currently running                                                                                                                                     |
 | K8S_POD_NAME             | string |  Unique pod name. Can be used to execute some commands in its containers.                                                                                                                           |
 | K8S_CONTAINER_IDS        | string |  Ids of all containers in pod deliminated by ','. Usefull in case you are logged on node where pod is running. Then you can login into container with this id                                       |
@@ -558,10 +558,64 @@ Each field can be set manually in the form key=value and the following table sho
 
 There is also one extra parameter available - 'file-name'. This file can contain also key=value pairs for exporting fields. When field is defined in file-name and given also as a paramter, value for such key in file is overriden by parameter's value. File can also contain comments - lines starting with '#'.
 
-##### Example:
+#### Example:
 ```
 ipfixprobe kubernetes:app-name=testapp:node-name=s2:pod-name=testpod:ports-exposed=80:ports-container=8080';'80:file-name=/path/to/testfile.txt -r sample.pcap -i "f:output.trapcap"
 ```
+### Ipfixcol2 config
+
+If you're using ipfixcol2 as a collector for capturing network flows, the following configuration file can be handy to represent ipfix message fields correctly:
+```
+<?xml version="1.0" encoding="utf-8"?>
+<ipfix-elements>
+    <scope>
+        <pen>16982</pen>
+        <name>muni</name>
+        <biflow mode="none"></biflow>
+    </scope>
+        <element>
+                <id>900</id>
+                <name>kubernetesAppName</name>
+                <dataType>string</dataType>
+        </element>
+        <element>
+                <id>901</id>
+                <name>kubernetesNodeName</name>
+                <dataType>string</dataType>
+        </element>
+        <element>
+                <id>902</id>
+                <name>kubernetesPodName</name>
+                <dataType>string</dataType>
+        </element>
+        <element>
+                <id>903</id>
+                <name>kubernetesContainerIds</name>
+                <dataType>string</dataType>
+        </element>
+        <element>
+                <id>904</id>
+                <name>kubernetesContainerImages</name>
+                <dataType>string</dataType>
+        </element>
+        <element>
+                <id>905</id>
+                <name>kubernetesContainerImageIds</name>
+                <dataType>string</dataType>
+        </element>
+        <element>
+                <id>906</id>
+                <name>kubernetesPortsContainer</name>
+                <dataType>string</dataType>
+        </element>
+        <element>
+                <id>907</id>
+                <name>kubernetesPortsExposed</name>
+                <dataType>string</dataType>
+        </element>
+</ipfix-elements>
+```
+To see how to configure ipfixcol2 correctly, check manuals available in its [repository](https://github.com/CESNET/ipfixcol2).
 
 ## Simplified function diagram
 Diagram below shows how `ipfixprobe` works.
